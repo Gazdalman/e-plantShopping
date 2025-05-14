@@ -8,6 +8,7 @@ function ProductList({ onHomeClick }) {
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
   const [addedToCart, setAddedToCart] = useState({}); // State to control the visibility of the cart
+  const [numItems, setNumItems] = useState(0); // State to control the number of items in the cart
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
@@ -291,6 +292,7 @@ function ProductList({ onHomeClick }) {
   const handleAddToCart = (plant) => {
     console.log(cartItems);
     dispatch(addItem(plant));
+    setNumItems(numItems + 1);
     setAddedToCart(prev => ({
       ...prev,
       [plant.name]: true,
@@ -331,6 +333,22 @@ function ProductList({ onHomeClick }) {
             {" "}
             <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
               <h1 className="cart">
+              {numItems > 0 && (
+                <span
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  padding: "5px 10px",
+                  fontSize: "16px",
+                }}
+                >
+                {numItems}
+                </span>
+              )}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 256 256"
@@ -421,7 +439,7 @@ function ProductList({ onHomeClick }) {
           )}
         </div>
       ) : (
-        <CartItem onContinueShopping={handleContinueShopping} />
+        <CartItem onContinueShopping={handleContinueShopping} numItems={numItems} setNumItems={setNumItems}/>
       )}
     </div>
   );
