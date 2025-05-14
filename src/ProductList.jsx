@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "./CartSlice";
+
 function ProductList({ onHomeClick }) {
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
   const [addedToCart, setAddedToCart] = useState({}); // State to control the visibility of the cart
+  const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
   const plantsArray = [
@@ -287,6 +289,7 @@ function ProductList({ onHomeClick }) {
     setShowCart(false); // Hide the cart when navigating to About Us
   };
   const handleAddToCart = (plant) => {
+    console.log(cartItems);
     dispatch(addItem(plant));
     setAddedToCart(prev => ({
       ...prev,
@@ -297,6 +300,9 @@ function ProductList({ onHomeClick }) {
     e.preventDefault();
     setShowCart(false);
   };
+
+// check to see if items in the cart have changed in the state.items, change the state of addedToCart
+
   return (
     <div>
       <div className="navbar" style={styleObj}>
